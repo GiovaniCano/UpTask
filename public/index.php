@@ -20,8 +20,8 @@ $router->get("/olvide", [LoginController::class, "olvide"]);
 $router->post("/olvide", [LoginController::class, "olvide"]);
 
 /* nuevo password */
-$router->get("/reestablecer", [LoginController::class, "reestablecer"]);
-$router->post("/reestablecer", [LoginController::class, "reestablecer"]);
+$router->get("/restablecer", [LoginController::class, "restablecer"]);
+$router->post("/restablecer", [LoginController::class, "restablecer"]);
 
 /* confirmacion de cuenta */
 $router->get("/mensaje", [LoginController::class, "mensaje"]);
