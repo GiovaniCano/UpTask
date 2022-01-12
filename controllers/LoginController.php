@@ -11,7 +11,7 @@ class LoginController {
 
         // Render a la vista
         $router->render("auth/login", [
-            "titulo" => "Iniciar Sesión"
+            "titulo" => "Iniciar sesión"
         ]);
     }
 
@@ -30,12 +30,14 @@ class LoginController {
         ]);
     }
 
-    public static function olvide() {
-        echo "desde olvide";
-
+    public static function olvide(Router $router) {
         if($_SERVER["REQUEST_METHOD"] === "POST") {
             
         }
+
+        $router->render("auth/olvide", [
+            "titulo" => "Olvide mi contraseña"
+        ]);
     }
 
     public static function reestablecer() {
