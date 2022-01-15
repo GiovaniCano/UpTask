@@ -4,14 +4,14 @@
     <div class="contenedor-sm">
         <p class="descripcion-pagina">Crea tu cuenta en UpTask</p>
 
-        <form action="POST" class="formulario">
+        <form method="POST" class="formulario">
             <div class="campo">
                 <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" placeholder="Tu Nombre" name="nombre">
+                <input type="text" id="nombre" placeholder="Tu Nombre" name="nombre" value="<?php echo $usuario->nombre ?>">
             </div>
             <div class="campo">
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Tu Email" name="email">
+                <input type="email" id="email" placeholder="Tu Email" name="email" value="<?php echo $usuario->email ?>">
             </div>
             <div class="campo">                
                 <label for="password">Contraseña</label>

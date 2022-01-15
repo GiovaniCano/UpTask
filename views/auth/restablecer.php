@@ -4,7 +4,7 @@
     <div class="contenedor-sm">
         <p class="descripcion-pagina">Coloca tu nueva contraseña</p>
 
-        <form action="POST" class="formulario">
+        <form method="POST" class="formulario">
             <div class="campo">                
                 <label for="password">Contraseña</label>
                 <input type="password" id="password" placeholder="Tu Nueva Contraseña" name="password">
