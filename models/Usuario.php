@@ -17,6 +17,7 @@ class Usuario extends ActiveRecord {
         $this->nombre = $args["nombre"] ?? "";
         $this->email = $args["email"] ?? "";
         $this->password = $args["password"] ?? "";
+        $this->password2 = $args["password2"] ?? "";
         $this->token = $args["token"] ?? "";
         $this->confirmado = $args["confirmado"] ?? "";
     }
@@ -29,6 +30,18 @@ class Usuario extends ActiveRecord {
         if(!$this->email) {
             self::$alertas["error"][] = "El Email del Usuario es Obligatorio";
         }
+
+        // password
+        if(!$this->password) {
+            self::$alertas["error"][] = "La Contraseña del Usuario es Obligatoria";
+        }
+        if(strlen($this->password) < 6) {
+            self::$alertas["error"][] = "La Contraseña debe Contener al menos 6 Caracteres";
+        }
+        if($this->password !== $this->password2) {
+            self::$alertas["error"][] = "Las Contraseñas son Diferentes";
+        }
+
         return self::$alertas;
     }
 }
