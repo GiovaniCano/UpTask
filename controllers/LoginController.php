@@ -1,6 +1,7 @@
 <?php
 namespace Controllers;
 
+use Classes\Email;
 use Model\Usuario;
 use MVC\Router;
 
@@ -45,6 +46,11 @@ class LoginController {
 
                     // Crear nuevo usuario
                     $resultado = $usuario->guardar();
+
+                    // enviar email
+                    $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
+                    $email->enviarConfirmacion();
+
                     if($resultado) {
                         exit(header("location: /mensaje"));
                     }
@@ -87,8 +93,29 @@ class LoginController {
     }
         
     public static function confirmar(Router $router) {
+        $token = s($_GET["token"]);
+        if(!$token) exit(header("location: /"));
+
+        // Encontrar al usuario con el token
+        $usuario = Usuario::where("token", $token);
+        if(empty($usuario)) {
+            // token no valido
+            Usuario::setAlerta("error", "Token no Válido");
+        } else {
+            // Confirmar la cuenta
+            $usuario->confirmado = 1;
+            unset($usuario->password2);
+            $usuario->token = null;
+            
+            $usuario->guardar();
+            Usuario::setAlerta("exito", "Cuenta Confirmada Correctamente");
+        }
+
+        $alertas = Usuario::getAlertas();
+
         $router->render("auth/confirmar", [
-            "titulo" => "Confirma tu Cuenta"
+            "titulo" => "Confirma tu Cuenta",
+            "alertas" => $alertas
         ]);
     }
 }
