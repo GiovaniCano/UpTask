@@ -53,4 +53,25 @@ class Usuario extends ActiveRecord {
         $this->token = uniqid();
         // $this->token = md5(uniqid());
     }
+
+    public function validarEmail() {
+        if(!$this->email) {
+            self::$alertas["error"][] = "El Email es Obligatorio";
+        }
+        if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            self::$alertas["error"][] = "Email no Válido";
+        }
+        return self::$alertas;
+    }
+
+    public function validarPassword() {
+        if(!$this->password) {
+            self::$alertas["error"][] = "La Contraseña del Usuario es Obligatoria";
+        }
+        if(strlen($this->password) < 6) {
+            self::$alertas["error"][] = "La Contraseña debe Contener al menos 6 Caracteres";
+        }
+
+        return self::$alertas;
+    }
 }

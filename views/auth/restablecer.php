@@ -4,14 +4,17 @@
     <div class="contenedor-sm">
         <p class="descripcion-pagina">Coloca tu nueva contraseña</p>
 
-        <form method="POST" class="formulario">
-            <div class="campo">                
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" placeholder="Tu Nueva Contraseña" name="password">
-            </div>
+        <?php include_once __DIR__ . "/../templates/alertas.php"?>
+        <?php if($mostrarFormulario): ?>
+            <form method="POST" class="formulario">
+                <div class="campo">                
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Tu Nueva Contraseña" name="password">
+                </div>
 
-            <input type="submit" class="boton" value="Guardar Contraseña">
-        </form>
+                <input type="submit" class="boton" value="Guardar Contraseña">
+            </form>
+        <?php endif; ?>
 
         <div class="acciones">
             <a href="/">¿Ya tienes cuenta? Iniciar sesión</a>
