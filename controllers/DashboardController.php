@@ -60,7 +60,7 @@ class DashboardController {
         if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) exit(header("location: /dashboard"));
 
         $router->render("dashboard/proyecto", [
-            "titulo" => "Nombre del Proyecto"
+            "titulo" => $proyecto->proyecto
         ]);
     }
 
