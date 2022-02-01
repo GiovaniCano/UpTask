@@ -1,7 +1,28 @@
-DirectoryIndex public/
-DirectoryIndex index.php
+DirectoryIndex public/index.php
 
 RewriteEngine on
+# hide public/index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ public/index.php/$1
+
+# protect (only public/ should be reachable)
+RedirectMatch (?i)^/classes/ /404
+RedirectMatch (?i)^/controllers/ /404
+RedirectMatch (?i)^/includes/ /404
+RedirectMatch (?i)^/models/ /404
+RedirectMatch (?i)^/vendor/ /404
+RedirectMatch (?i)^/views/ /404
+RedirectMatch (?i)^/Router.php /404
+
+# these shouldn't be in production
+RedirectMatch (?i)^/src/ /404
+RedirectMatch (?i)^/sql/ /404
+RedirectMatch (?i)^/\.htaccess /404
+RedirectMatch (?i)^/\.gitignore /404
+RedirectMatch (?i)^/gulpfile.js /404
+RedirectMatch (?i)^/README.md /404
+RedirectMatch (?i)^/composer.json /404
+RedirectMatch (?i)^/composer.lock /404
+RedirectMatch (?i)^/package.json /404
+RedirectMatch (?i)^/package-lock.json /404

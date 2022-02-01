@@ -14,6 +14,8 @@ $router->get("/", [LoginController::class, "login"]);
 $router->post("/", [LoginController::class, "login"]);
 $router->get("/logout", [LoginController::class, "logout"]);
 
+$router->get("/404", [LoginController::class, "p404"]);
+
 /* crear cuenta */
 $router->get("/crear", [LoginController::class, "crear"]);
 $router->post("/crear", [LoginController::class, "crear"]);

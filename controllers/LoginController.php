@@ -194,4 +194,10 @@ class LoginController {
             "alertas" => $alertas
         ]);
     }
+
+    public static function p404(Router $router) {
+        $router->render("auth/404", [
+            "titulo" => "Error 404"
+        ]);
+    }
 }
