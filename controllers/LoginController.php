@@ -22,7 +22,7 @@ class LoginController {
                     Usuario::setAlerta("error", "El Usuario no Existe o no está Confirmado");
                 } else {
                     // existe y está confirmado
-                    if(password_verify($_POST["password"], $usuario->password)) {
+                    if(password_verify($_POST["password"]??"", $usuario->password)) {
                         // Iniciar sesion
                         session_start();
                         $_SESSION["id"] = $usuario->id;
