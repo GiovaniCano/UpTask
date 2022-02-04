@@ -144,4 +144,29 @@ class DashboardController {
             "alertas" => $alertas
         ]);
     }
+
+    public static function eliminar_cuenta(Router $router) {
+        session_start();
+        isAuth();
+        $alertas = [];
+
+        if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $usuario = Usuario::find($_SESSION["id"]);
+            $inputPassword = $_POST["password"] ?? "";
+            $correctPassword = password_verify($inputPassword, $usuario->password);
+            if($correctPassword) {
+                $usuario->eliminar();
+                $_SESSION = [];
+                exit(header("location: /"));
+            } else {
+                Usuario::setAlerta("error", "Contraseña Incorrecta");
+                $alertas = $usuario->getAlertas();
+            }
+        }
+
+        $router->render("dashboard/eliminar-cuenta", [
+            "titulo" => "Eliminar Cuenta",
+            "alertas" => $alertas
+        ]);
+    }
 }
