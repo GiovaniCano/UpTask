@@ -13,7 +13,8 @@
     .login .acciones a,
     .crear .acciones a,
     .olvide .acciones a,
-    .confirmar .acciones a {
+    .confirmar .acciones a,
+    .restablecer .acciones a {
         color: v.$blanco;        
     }
     .descripcion-pagina,
@@ -30,6 +31,10 @@
 
     .alerta.error {
         background-color: v.$blanco;
+    }
+    .swal2-popup {
+        background-color: v.$grisOscuro !important;
+        color: v.$grisClaro !important;
     }
 
     .sidebar {
@@ -87,6 +92,12 @@
             &:hover {
                 color: darken($color: v.$grisClaro, $amount: 20%);
             }
+        }
+        .no-proyectos a{
+            color: v.$blanco;
+        }
+        .no-tareas {
+            color: lighten(v.$gris, 15%);
         }
     }
 
