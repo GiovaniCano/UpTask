@@ -7,6 +7,9 @@ use MVC\Router;
 
 class LoginController {
     public static function login(Router $router) {
+        session_start();
+        if($_SESSION["login"] ?? false) exit(header("location: /dashboard"));
+
         $alertas = [];
         if($_SERVER["REQUEST_METHOD"] === "POST") {
             $usuario = new Usuario($_POST);            
@@ -49,6 +52,9 @@ class LoginController {
     }
 
     public static function crear(Router $router) {
+        session_start();
+        if($_SESSION["login"] ?? false) exit(header("location: /dashboard"));
+        
         $usuario = new Usuario;
         $alertas = [];
 
@@ -94,6 +100,9 @@ class LoginController {
     }
 
     public static function olvide(Router $router) {
+        session_start();
+        if($_SESSION["login"] ?? false) exit(header("location: /dashboard"));
+        
         $alertas = [];
         if($_SERVER["REQUEST_METHOD"] === "POST") {
             $usuario = new Usuario($_POST);
