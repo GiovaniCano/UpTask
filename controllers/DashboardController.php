@@ -37,7 +37,8 @@ class DashboardController {
                 $proyecto->propietarioId = $_SESSION["id"];
 
                 // guardar proyecto
-                $proyecto->guardar();
+                // $proyecto->guardar();
+                $proyecto->crear();
 
                 // redireccionar
                 exit(header("location: /proyecto?id=".$proyecto->url));
@@ -82,7 +83,9 @@ class DashboardController {
                     Usuario::setAlerta("error", "Este email ya esta registrado en otra cuenta");
                     $alertas = Usuario::getAlertas();
                 } else {
-                    $usuario->guardar();
+                    // $usuario->guardar();
+                    $usuario->actualizar();
+                    
                     Usuario::setAlerta("exito", "Guardado Correctamente");
                     $alertas = Usuario::getAlertas();
     
@@ -122,7 +125,8 @@ class DashboardController {
 
                     // cambiar password en db
                     $usuario->hashPassword();
-                    $resultado = $usuario->guardar();
+                    // $resultado = $usuario->guardar();
+                    $resultado = $usuario->actualizar();
 
                     if($resultado) {
                         Usuario::setAlerta("exito", "Guardado Correctamente");

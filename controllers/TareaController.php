@@ -34,7 +34,8 @@ class TareaController {
             // crear tarea
             $tarea = new Tarea($_POST);
             $tarea->proyectoId = $proyecto->id;
-            $resultado = $tarea->guardar();
+            // $resultado = $tarea->guardar();
+            $resultado = $tarea->crear();
 
             $respuesta = [
                 "tipo" => "exito",
@@ -62,7 +63,8 @@ class TareaController {
 
             $tarea = new Tarea($_POST);
             $tarea->proyectoId = $proyecto->id;
-            $resultado = $tarea->guardar();
+            // $resultado = $tarea->guardar();
+            $resultado = $tarea->actualizar();
 
             $respuesta = [
                 "tipo" => "exito",

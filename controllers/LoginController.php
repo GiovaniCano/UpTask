@@ -78,7 +78,8 @@ class LoginController {
                     $usuario->crearToken();
 
                     // Crear nuevo usuario
-                    $resultado = $usuario->guardar();
+                    // $resultado = $usuario->guardar();
+                    $resultado = $usuario->crear();
 
                     // enviar email
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
@@ -117,7 +118,8 @@ class LoginController {
                     unset($usuario->password2);
 
                     // Actualizar usuario
-                    $usuario->guardar();
+                    // $usuario->guardar();
+                    $usuario->actualizar();
 
                     // Enviar email
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
@@ -159,7 +161,8 @@ class LoginController {
             if(empty($alertas)) {
                 $usuario->hashPassword();
                 $usuario->token = null;
-                $resultdo = $usuario->guardar();
+                // $resultdo = $usuario->guardar();
+                $resultdo = $usuario->actualizar();
                 if($resultdo) exit(header("location: /"));
             }
         }
@@ -193,7 +196,8 @@ class LoginController {
             unset($usuario->password2);
             $usuario->token = null;
             
-            $usuario->guardar();
+            // $usuario->guardar();
+            $usuario->actualizar();
             Usuario::setAlerta("exito", "Cuenta Confirmada Correctamente");
         }
 
