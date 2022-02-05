@@ -28,6 +28,8 @@
         line-height: 1.8;
         border-radius: .5rem;
         color: v.$blanco;
+        // word-break: break-all;
+        overflow-wrap: anywhere;
 
         &:hover {
             background-color: darken(v.$indigo, 5%);

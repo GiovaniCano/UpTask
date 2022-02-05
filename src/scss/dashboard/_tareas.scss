@@ -20,21 +20,28 @@
     }
 
     .tarea {
-        padding: .5rem 2rem;
+        padding: 1rem 2rem;
         border-bottom: 2px solid darken($color: v.$grisClaro, $amount: 5%);
         margin-bottom: 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        overflow-wrap: anywhere;
         &:last-of-type {border: 0;}
 
         p {
             font-size: 1.6rem;
+            padding-right: 1.2rem;
         }
 
         .opciones {
             display: flex;
-            gap: 1rem;
+            flex-direction: column;
+            gap: 2rem;
+            @include m.tablet {
+                flex-direction: row;
+                gap: 1rem;
+            }
 
             button {
                 border: none;
@@ -44,6 +51,7 @@
                 font-weight: 700;
                 border-radius: 1rem;
                 cursor: pointer;
+                white-space: nowrap;
             }
             .completa {
                 background-color: v.$azul;
