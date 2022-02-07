@@ -59,6 +59,8 @@ class LoginController {
         $alertas = [];
 
         if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["nombre", "email", "password", "password2"]);
+            
             $usuario->sincronizar($_POST);
             $alertas = $usuario->validarNuevaCuenta();
 
@@ -154,6 +156,7 @@ class LoginController {
         }
 
         if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["password"]);
             // añadir la nueva contraseña
             $usuario->sincronizar($_POST);
             $alertas = $usuario->validarPassword();

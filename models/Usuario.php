@@ -38,8 +38,14 @@ class Usuario extends ActiveRecord {
         if(!$this->nombre) {
             self::$alertas["error"][] = "El Nombre del Usuario es Obligatorio";
         }
+        if(strlen($this->nombre) > 30) {
+            self::$alertas["error"][] = "Nombre de Usuario Demasiado Largo (30 Caracteres Máximo)";
+        }
         if(!$this->email) {
             self::$alertas["error"][] = "El Email del Usuario es Obligatorio";
+        }
+        if(strlen($this->email) > 30) {
+            self::$alertas["error"][] = "Email Demasiado Largo (30 Caracteres Máximo)";
         }
 
         // password
@@ -48,6 +54,9 @@ class Usuario extends ActiveRecord {
         }
         if(strlen($this->password) < 6) {
             self::$alertas["error"][] = "La Contraseña debe Contener al menos 6 Caracteres";
+        }
+        if(strlen($this->password) > 60) {
+            self::$alertas["error"][] = "Contraseña Demasiado Larga (60 Caracteres Máximo)";
         }
         if($this->password !== $this->password2) {
             self::$alertas["error"][] = "Las Contraseñas son Diferentes";

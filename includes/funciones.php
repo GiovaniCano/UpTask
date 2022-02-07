@@ -16,6 +16,21 @@ function s($html) : string {
 // Función que revisa que el usuario este autenticado
 function isAuth() : void {
     if(!isset($_SESSION['login'])) {
-        header('Location: /');
+        exit(header('Location: /'));
     }
+}
+function isAuthAPI() {    
+    if(!isset($_SESSION['login'])) {
+        exit;
+    }
+}
+
+/** Unset keys if they are not expected */
+function cleanAssocArray(array $assocArray, array $expectedKeys):array {
+    foreach($assocArray as $key => $value) {
+        if( !in_array($key, $expectedKeys) ) {
+            unset( $assocArray[$key] );
+        }
+    }
+    return $assocArray;
 }

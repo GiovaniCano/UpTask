@@ -24,6 +24,8 @@ class DashboardController {
         $alertas = [];
 
         if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["proyecto"]);
+            
             $proyecto = new Proyecto($_POST);
             
             // validacion
@@ -74,6 +76,8 @@ class DashboardController {
         $usuario = Usuario::find($_SESSION["id"]);
 
         if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["nombre", "email"]);
+
             $usuario->sincronizar($_POST);
             $alertas = $usuario->validarPerfil();
 
@@ -108,6 +112,8 @@ class DashboardController {
         $alertas = [];
 
         if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["password_actual", "password_nuevo"]);
+
             $usuario = Usuario::find($_SESSION["id"]);
             $usuario->sincronizar($_POST);
             $alertas = $usuario->nuevoPassword();

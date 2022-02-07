@@ -6,10 +6,12 @@ use Model\Tarea;
 
 class TareaController {
     public static function index() {
+        session_start();
+        isAuthAPI();
+
         $proyectoId = $_GET["id"];
         if(!$proyectoId) exit(header("location: /dashboard"));
 
-        session_start();
         $proyecto = Proyecto::where("url", $proyectoId);
         if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) exit(header("location: /dashboard"));
 
@@ -20,6 +22,8 @@ class TareaController {
     public static function crear() {
         if($_SERVER["REQUEST_METHOD"] === "POST") {
             session_start();
+            isAuthAPI();
+
             $proyecto = Proyecto::where("url", $_POST["proyectoId"] ?? "");
             if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) {
                 // error
