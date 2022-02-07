@@ -54,6 +54,8 @@ class TareaController {
     public static function actualizar() {
         if($_SERVER["REQUEST_METHOD"] === "POST") {
             session_start();
+            isAuthAPI();
+
             $proyecto = Proyecto::where("url", $_POST["proyectoId"] ?? "");
             if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) {
                 // error
@@ -82,6 +84,8 @@ class TareaController {
     public static function eliminar() {
         if($_SERVER["REQUEST_METHOD"] === "POST") {
             session_start();
+            isAuthAPI();
+            
             $proyecto = Proyecto::where("url", $_POST["proyectoId"] ?? "");
             if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) {
                 // error
