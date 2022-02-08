@@ -152,9 +152,13 @@
             if(e.target.classList.contains("submit-nueva-tarea")) {
                 // validar
                 const nombreTarea = document.querySelector("#tarea").value.trim()
+                const referencia = document.querySelector(".formulario legend")
                 if(nombreTarea === "") {
-                    const referencia = document.querySelector(".formulario legend")
                     mostrarAlerta("El nombre de la tarea es obligatorio", "error", referencia)
+                    return
+                }
+                if(nombreTarea.length > 60) {
+                    mostrarAlerta("Nombre de la tarea demasiado largo (60 Caracteres Máximo)", "error", referencia)
                     return
                 }
         

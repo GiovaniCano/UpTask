@@ -23,6 +23,9 @@ class Proyecto extends ActiveRecord {
         if(!$this->proyecto) {
             self::$alertas["error"][] = "El Nombre del Proyecto es Obligatorio";
         }
+        if(strlen($this->proyecto) > 60) {
+            self::$alertas["error"][] = "Nombre de Proyecto Demasiado Largo (60 Caracteres Máximo)";
+        }
         return self::$alertas;
     }
 }

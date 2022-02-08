@@ -41,7 +41,7 @@ class Usuario extends ActiveRecord {
         if(strlen($this->nombre) > 30) {
             self::$alertas["error"][] = "Nombre de Usuario Demasiado Largo (30 Caracteres Máximo)";
         }
-        if(!$this->email) {
+        if(!$this->email || !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
             self::$alertas["error"][] = "El Email del Usuario es Obligatorio";
         }
         if(strlen($this->email) > 30) {
@@ -69,8 +69,14 @@ class Usuario extends ActiveRecord {
         if(!$this->nombre) {
             self::$alertas["error"][] = "El Nombre es Obligatorio";
         }
+        if(strlen($this->nombre) > 30) {
+            self::$alertas["error"][] = "Nombre de Usuario Demasiado Largo (30 Caracteres Máximo)";
+        }
         if(!$this->email) {
             self::$alertas["error"][] = "El Email es Obligatorio";
+        }
+        if(strlen($this->email) > 30) {
+            self::$alertas["error"][] = "Email Demasiado Largo (30 Caracteres Máximo)";
         }
         return self::$alertas;
     }
@@ -78,6 +84,7 @@ class Usuario extends ActiveRecord {
         if(!$this->password_actual) self::$alertas["error"][] = "La contraseña actual es necesaria";
         if(!$this->password_nuevo) self::$alertas["error"][] = "La contraseña nueva es necesaria";
         if(strlen($this->password_nuevo) < 6) self::$alertas["error"][] = "La contraseña nueva debe contener al menos 6 caracteres";
+        if(strlen($this->password_nuevo) > 60) self::$alertas["error"][] = "Contraseña Demasiado Larga (60 Caracteres Máximo)";
 
         return self::$alertas;
     }
@@ -110,6 +117,9 @@ class Usuario extends ActiveRecord {
         }
         if(strlen($this->password) < 6) {
             self::$alertas["error"][] = "La Contraseña debe Contener al menos 6 Caracteres";
+        }
+        if(strlen($this->password) > 60) {
+            self::$alertas["error"][] = "Contraseña Demasiado Larga (60 Caracteres Máximo)";
         }
 
         return self::$alertas;
