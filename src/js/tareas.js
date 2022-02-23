@@ -188,7 +188,7 @@
         datos.append("proyectoId", obtenerProyecto());
 
         try {
-            const url = "http://localhost/api/tarea";
+            const url = "/api/tarea";
             const respuesta = await fetch(url, {
                 method: "POST",
                 body: datos
@@ -239,7 +239,7 @@
         // }
 
         try {
-            const url = "http://localhost/api/tarea/actualizar"
+            const url = "/api/tarea/actualizar"
             const respuesta = await fetch(url, {
                 method: "POST",
                 body: datos
@@ -298,7 +298,7 @@
         datos.append("proyectoId", obtenerProyecto()) //url
 
         try {
-            const url = "http://localhost/api/tarea/eliminar"
+            const url = "/api/tarea/eliminar"
             const respuesta = await fetch(url, {
                 method: "POST",
                 body: datos
