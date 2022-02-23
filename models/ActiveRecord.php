@@ -166,7 +166,7 @@ class ActiveRecord {
     public function atributos() {
         $atributos = [];
         foreach(static::$columnasDB as $columna) {
-            if($columna === 'id') continue;
+            if($columna == 'id') continue;
             $atributos[$columna] = $this->$columna;
         }
         return $atributos;
@@ -183,7 +183,7 @@ class ActiveRecord {
 
     public function sincronizar($args=[]) { 
         foreach($args as $key => $value) {
-          if(property_exists($this, $key) && !is_null($value)) {
+          if(property_exists($this, $key) && !is_null($value) && $key != "id") {
             $this->$key = $value;
           }
         }

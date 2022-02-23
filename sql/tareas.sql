@@ -14,7 +14,7 @@ CREATE TABLE `tareas` (
   `proyectoId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `proyectoId` (`proyectoId`),
-  CONSTRAINT `tareas_ibfk_1` FOREIGN KEY (`proyectoId`) REFERENCES `proyectos` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
+  CONSTRAINT `tareas_ibfk_1` FOREIGN KEY (`proyectoId`) REFERENCES `proyectos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

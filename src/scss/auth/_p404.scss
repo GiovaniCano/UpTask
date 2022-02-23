@@ -1,0 +1,28 @@
+@use "base/variables" as v;
+@use "base/mixins" as m;
+
+.p404 {
+    margin-top: 5rem;
+
+    .uptask {
+        @include m.textoDegradado(v.$indigo)
+    }
+
+    h3 {
+        text-align: center; 
+        color: lighten(v.$gris, 10%);
+        span {
+            font-weight: 400; 
+            font-size: 22px;
+        }
+    }
+
+    .acciones {
+        justify-content: center;
+        a {
+            color: v.$indigo;
+            font-size: 3rem;
+            text-decoration: underline;
+        }
+    }
+}

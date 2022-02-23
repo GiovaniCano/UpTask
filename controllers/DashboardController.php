@@ -24,6 +24,8 @@ class DashboardController {
         $alertas = [];
 
         if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["proyecto"]);
+            
             $proyecto = new Proyecto($_POST);
             
             // validacion
@@ -37,7 +39,8 @@ class DashboardController {
                 $proyecto->propietarioId = $_SESSION["id"];
 
                 // guardar proyecto
-                $proyecto->guardar();
+                // $proyecto->guardar();
+                $proyecto->crear();
 
                 // redireccionar
                 exit(header("location: /proyecto?id=".$proyecto->url));
@@ -50,6 +53,21 @@ class DashboardController {
         ]);
     }
 
+    public static function eliminar_proyectos() {
+        session_start();
+        isAuth();
+        if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $proyectoId = $_POST["proyectoId"] ?? "";
+            if(!$proyectoId) exit(header("location: /dashboard"));
+
+            $proyecto = Proyecto::where("url", $proyectoId);
+            if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) exit(header("location: /dashboard"));
+
+            $proyecto->eliminar();
+            exit(header("location: /dashboard"));
+        }
+    }
+
     public static function proyecto(Router $router) {
         session_start();
         isAuth();
@@ -60,8 +78,25 @@ class DashboardController {
         $proyecto = Proyecto::where("url", $token);
         if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) exit(header("location: /dashboard"));
 
+        $alertas = [];
+        if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["proyecto"]);
+            $tituloAnterior = $proyecto->proyecto;
+            $proyecto->sincronizar($_POST);
+
+            $alertas = $proyecto->validarProyecto();
+            if(!$alertas) {
+                $proyecto->actualizar();
+                // exit(header("Location: /proyecto?id=" . $token));
+            } else {
+                $proyecto->proyecto = $tituloAnterior;
+            }
+        }
+
         $router->render("dashboard/proyecto", [
-            "titulo" => $proyecto->proyecto
+            "titulo" => $proyecto->proyecto,
+            "proyectoId" => $token,
+            "alertas" => $alertas
         ]);
     }
 
@@ -73,6 +108,8 @@ class DashboardController {
         $usuario = Usuario::find($_SESSION["id"]);
 
         if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["nombre", "email"]);
+
             $usuario->sincronizar($_POST);
             $alertas = $usuario->validarPerfil();
 
@@ -82,7 +119,9 @@ class DashboardController {
                     Usuario::setAlerta("error", "Este email ya esta registrado en otra cuenta");
                     $alertas = Usuario::getAlertas();
                 } else {
-                    $usuario->guardar();
+                    // $usuario->guardar();
+                    $usuario->actualizar();
+                    
                     Usuario::setAlerta("exito", "Guardado Correctamente");
                     $alertas = Usuario::getAlertas();
     
@@ -105,6 +144,8 @@ class DashboardController {
         $alertas = [];
 
         if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["password_actual", "password_nuevo"]);
+
             $usuario = Usuario::find($_SESSION["id"]);
             $usuario->sincronizar($_POST);
             $alertas = $usuario->nuevoPassword();
@@ -122,7 +163,8 @@ class DashboardController {
 
                     // cambiar password en db
                     $usuario->hashPassword();
-                    $resultado = $usuario->guardar();
+                    // $resultado = $usuario->guardar();
+                    $resultado = $usuario->actualizar();
 
                     if($resultado) {
                         Usuario::setAlerta("exito", "Guardado Correctamente");
@@ -137,6 +179,31 @@ class DashboardController {
 
         $router->render("dashboard/cambiar-password", [
             "titulo" => "Cambiar Contraseña",
+            "alertas" => $alertas
+        ]);
+    }
+
+    public static function eliminar_cuenta(Router $router) {
+        session_start();
+        isAuth();
+        $alertas = [];
+
+        if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $usuario = Usuario::find($_SESSION["id"]);
+            $inputPassword = $_POST["password"] ?? "";
+            $correctPassword = password_verify($inputPassword, $usuario->password);
+            if($correctPassword) {
+                $usuario->eliminar();
+                $_SESSION = [];
+                exit(header("location: /"));
+            } else {
+                Usuario::setAlerta("error", "Contraseña Incorrecta");
+                $alertas = $usuario->getAlertas();
+            }
+        }
+
+        $router->render("dashboard/eliminar-cuenta", [
+            "titulo" => "Eliminar Cuenta",
             "alertas" => $alertas
         ]);
     }

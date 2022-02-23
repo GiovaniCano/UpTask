@@ -1,6 +1,7 @@
 <?php
 
 $db = mysqli_connect('localhost', 'root', 'root', 'uptask');
+$db->set_charset("utf8");
 
 
 if (!$db) {

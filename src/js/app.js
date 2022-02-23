@@ -21,3 +21,13 @@ window.addEventListener("resize", function() {
         sidebar.classList.remove("mostrar")
     }
 })
+
+/* quitar alertas */
+const alertas = document.getElementsByClassName("alerta")
+if(alertas) {
+    for(let alerta of alertas) {
+        setTimeout(() => {
+            if(alerta) alerta.remove()
+        }, 4000);
+    }
+}

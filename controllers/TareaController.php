@@ -6,10 +6,12 @@ use Model\Tarea;
 
 class TareaController {
     public static function index() {
+        session_start();
+        isAuthAPI();
+
         $proyectoId = $_GET["id"];
         if(!$proyectoId) exit(header("location: /dashboard"));
 
-        session_start();
         $proyecto = Proyecto::where("url", $proyectoId);
         if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) exit(header("location: /dashboard"));
 
@@ -20,7 +22,9 @@ class TareaController {
     public static function crear() {
         if($_SERVER["REQUEST_METHOD"] === "POST") {
             session_start();
-            $proyecto = Proyecto::where("url", $_POST["proyectoId"]);
+            isAuthAPI();
+
+            $proyecto = Proyecto::where("url", $_POST["proyectoId"] ?? "");
             if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) {
                 // error
                 $respuesta = [
@@ -34,7 +38,8 @@ class TareaController {
             // crear tarea
             $tarea = new Tarea($_POST);
             $tarea->proyectoId = $proyecto->id;
-            $resultado = $tarea->guardar();
+            // $resultado = $tarea->guardar();
+            $resultado = $tarea->crear();
 
             $respuesta = [
                 "tipo" => "exito",
@@ -49,7 +54,9 @@ class TareaController {
     public static function actualizar() {
         if($_SERVER["REQUEST_METHOD"] === "POST") {
             session_start();
-            $proyecto = Proyecto::where("url", $_POST["proyectoId"]);
+            isAuthAPI();
+
+            $proyecto = Proyecto::where("url", $_POST["proyectoId"] ?? "");
             if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) {
                 // error
                 $respuesta = [
@@ -62,7 +69,8 @@ class TareaController {
 
             $tarea = new Tarea($_POST);
             $tarea->proyectoId = $proyecto->id;
-            $resultado = $tarea->guardar();
+            // $resultado = $tarea->guardar();
+            $resultado = $tarea->actualizar();
 
             $respuesta = [
                 "tipo" => "exito",
@@ -76,7 +84,9 @@ class TareaController {
     public static function eliminar() {
         if($_SERVER["REQUEST_METHOD"] === "POST") {
             session_start();
-            $proyecto = Proyecto::where("url", $_POST["proyectoId"]);
+            isAuthAPI();
+            
+            $proyecto = Proyecto::where("url", $_POST["proyectoId"] ?? "");
             if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) {
                 // error
                 $respuesta = [

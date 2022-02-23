@@ -2,9 +2,7 @@
 
     <div class="contenedor-sm">
         <?php include_once __DIR__ . "/../templates/alertas.php" ?>
-
-        <a href="/cambiar-password" class="enlace">Cambiar Contraseña</a>
-
+        
         <form method="POST" class="formulario">
             <div class="campo">
                 <label for="nombre">Nombre</label>
@@ -14,9 +12,14 @@
                 <label for="email">Email</label>
                 <input type="email" id="email" value="<?php echo $usuario->email ?>" name="email" placeholder="Tu Email">
             </div>
-
+            
             <input type="submit" value="Guardar Cambios">
         </form>
+        
+        <div class="acciones-perfil">
+            <a href="/cambiar-password" class="enlace">Cambiar Contraseña</a>
+            <a href="/eliminar-cuenta" class="enlace">Eliminar Cuenta</a>
+        </div>
     </div>
 
 <?php include_once __DIR__ ."/footer-dashboard.php" ?>

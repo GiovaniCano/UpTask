@@ -7,6 +7,9 @@ use MVC\Router;
 
 class LoginController {
     public static function login(Router $router) {
+        session_start();
+        if($_SESSION["login"] ?? false) exit(header("location: /dashboard"));
+
         $alertas = [];
         if($_SERVER["REQUEST_METHOD"] === "POST") {
             $usuario = new Usuario($_POST);            
@@ -19,7 +22,7 @@ class LoginController {
                     Usuario::setAlerta("error", "El Usuario no Existe o no está Confirmado");
                 } else {
                     // existe y está confirmado
-                    if(password_verify($_POST["password"], $usuario->password)) {
+                    if(password_verify($_POST["password"]??"", $usuario->password)) {
                         // Iniciar sesion
                         session_start();
                         $_SESSION["id"] = $usuario->id;
@@ -49,10 +52,15 @@ class LoginController {
     }
 
     public static function crear(Router $router) {
+        session_start();
+        if($_SESSION["login"] ?? false) exit(header("location: /dashboard"));
+        
         $usuario = new Usuario;
         $alertas = [];
 
         if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["nombre", "email", "password", "password2"]);
+            
             $usuario->sincronizar($_POST);
             $alertas = $usuario->validarNuevaCuenta();
 
@@ -72,7 +80,8 @@ class LoginController {
                     $usuario->crearToken();
 
                     // Crear nuevo usuario
-                    $resultado = $usuario->guardar();
+                    // $resultado = $usuario->guardar();
+                    $resultado = $usuario->crear();
 
                     // enviar email
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
@@ -94,6 +103,9 @@ class LoginController {
     }
 
     public static function olvide(Router $router) {
+        session_start();
+        if($_SESSION["login"] ?? false) exit(header("location: /dashboard"));
+        
         $alertas = [];
         if($_SERVER["REQUEST_METHOD"] === "POST") {
             $usuario = new Usuario($_POST);
@@ -108,7 +120,8 @@ class LoginController {
                     unset($usuario->password2);
 
                     // Actualizar usuario
-                    $usuario->guardar();
+                    // $usuario->guardar();
+                    $usuario->actualizar();
 
                     // Enviar email
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
@@ -143,6 +156,7 @@ class LoginController {
         }
 
         if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["password"]);
             // añadir la nueva contraseña
             $usuario->sincronizar($_POST);
             $alertas = $usuario->validarPassword();
@@ -150,7 +164,8 @@ class LoginController {
             if(empty($alertas)) {
                 $usuario->hashPassword();
                 $usuario->token = null;
-                $resultdo = $usuario->guardar();
+                // $resultdo = $usuario->guardar();
+                $resultdo = $usuario->actualizar();
                 if($resultdo) exit(header("location: /"));
             }
         }
@@ -184,7 +199,8 @@ class LoginController {
             unset($usuario->password2);
             $usuario->token = null;
             
-            $usuario->guardar();
+            // $usuario->guardar();
+            $usuario->actualizar();
             Usuario::setAlerta("exito", "Cuenta Confirmada Correctamente");
         }
 

@@ -1,5 +1,7 @@
 (function(){
     obtenerTareas()
+    editarNombreProyecto()
+    confirmarEliminarProyecto()
     let tareas = [] //tareas en memoria, para virtualDOM
     let filtradas = []
 
@@ -66,6 +68,11 @@
             const nombreTarea = document.createElement("P")
             nombreTarea.textContent = tarea.nombre
             nombreTarea.ondblclick = function() {
+                if (window.getSelection) {
+                    window.getSelection().removeAllRanges();
+                } else if (document.selection) { 
+                    document.selection.empty();
+                }
                 mostrarFormulario(true, {...tarea})
             }
 
@@ -152,9 +159,13 @@
             if(e.target.classList.contains("submit-nueva-tarea")) {
                 // validar
                 const nombreTarea = document.querySelector("#tarea").value.trim()
+                const referencia = document.querySelector(".formulario legend")
                 if(nombreTarea === "") {
-                    const referencia = document.querySelector(".formulario legend")
                     mostrarAlerta("El nombre de la tarea es obligatorio", "error", referencia)
+                    return
+                }
+                if(nombreTarea.length > 60) {
+                    mostrarAlerta("Nombre de la tarea demasiado largo (60 Caracteres Máximo)", "error", referencia)
                     return
                 }
         
@@ -177,7 +188,7 @@
         datos.append("proyectoId", obtenerProyecto());
 
         try {
-            const url = "http://localhost/api/tarea";
+            const url = "/api/tarea";
             const respuesta = await fetch(url, {
                 method: "POST",
                 body: datos
@@ -228,7 +239,7 @@
         // }
 
         try {
-            const url = "http://localhost/api/tarea/actualizar"
+            const url = "/api/tarea/actualizar"
             const respuesta = await fetch(url, {
                 method: "POST",
                 body: datos
@@ -287,7 +298,7 @@
         datos.append("proyectoId", obtenerProyecto()) //url
 
         try {
-            const url = "http://localhost/api/tarea/eliminar"
+            const url = "/api/tarea/eliminar"
             const respuesta = await fetch(url, {
                 method: "POST",
                 body: datos
@@ -340,6 +351,68 @@
 
         while(listadoTareas.firstChild) { //más rapido que innerHtml = ""
             listadoTareas.removeChild(listadoTareas.firstChild)
+        }
+    }
+
+    function editarNombreProyecto() {
+        const titulo = document.querySelector(".nombre-pagina")
+        titulo.ondblclick = function(e) {
+            if (window.getSelection) {
+                window.getSelection().removeAllRanges();
+            } else if (document.selection) { 
+                document.selection.empty();
+            }
+            const nombreProyecto = e.target.innerText
+            const modal = document.createElement("DIV")
+            modal.classList.add("modal")
+            modal.innerHTML = `
+                <form method="POST" class="formulario nueva-tarea">
+                    <legend>Nombre del Proyecto</legend>
+                    <div class="campo">
+                        <input type="text" name="proyecto" placeholder="Nombre del proyecto" value="${nombreProyecto}">
+                    </div>
+                    <div class="opciones">
+                        <input type="submit" class="submit-nueva-tarea" value="Guardar Cambios">
+                        <button type="button" class="cerrar-modal">Cerrar</button>
+                    </div>
+                </form>
+            `;
+    
+            setTimeout(() => {
+                const formulario = document.querySelector(".formulario")
+                formulario.classList.add("animar");
+            }, 0);
+    
+            modal.querySelector(".cerrar-modal").addEventListener("click", function(){
+                const formulario = document.querySelector(".formulario")
+                formulario.classList.add("cerrar");
+
+                setTimeout(() => {
+                    modal.remove()                    
+                }, 400);
+            })
+    
+            document.querySelector(".dashboard").appendChild(modal)            
+        }
+    }
+
+    function confirmarEliminarProyecto() {
+        const formEliminar = document.getElementById("eliminar-proyecto")
+        if(formEliminar) {
+            formEliminar.onsubmit = function(e) {
+                const form = e.currentTarget
+                e.preventDefault()
+                Swal.fire({
+                    title: '¿Eliminar Proyecto?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Si',
+                    cancelButtonText: 'No',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit()
+                    }
+                })
+            }
         }
     }
 })()

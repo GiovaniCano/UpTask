@@ -36,11 +36,15 @@ $router->get("/confirmar", [LoginController::class, "confirmar"]);
 $router->get("/dashboard", [DashboardController::class, "index"]);
 $router->get("/crear-proyectos", [DashboardController::class, "crear_proyectos"]);
 $router->post("/crear-proyectos", [DashboardController::class, "crear_proyectos"]);
+$router->post("/eliminar-proyectos", [DashboardController::class, "eliminar_proyectos"]);
 $router->get("/proyecto", [DashboardController::class, "proyecto"]);
+$router->post("/proyecto", [DashboardController::class, "proyecto"]);
 $router->get("/perfil", [DashboardController::class, "perfil"]);
 $router->post("/perfil", [DashboardController::class, "perfil"]);
 $router->get("/cambiar-password", [DashboardController::class, "cambiar_password"]);
 $router->post("/cambiar-password", [DashboardController::class, "cambiar_password"]);
+$router->get("/eliminar-cuenta", [DashboardController::class, "eliminar_cuenta"]);
+$router->post("/eliminar-cuenta", [DashboardController::class, "eliminar_cuenta"]);
 
 // API Tareas
 $router->get("/api/tareas", [TareaController::class, "index"]);

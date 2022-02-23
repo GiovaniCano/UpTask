@@ -6,7 +6,7 @@ use Model\ActiveRecord;
 class Proyecto extends ActiveRecord {
     protected static $tabla = "proyectos";
     protected static $columnasDB = [
-        "id",
+        // "id",
         "proyecto",
         "url",
         "propietarioId"
@@ -22,6 +22,9 @@ class Proyecto extends ActiveRecord {
     public function validarProyecto() {
         if(!$this->proyecto) {
             self::$alertas["error"][] = "El Nombre del Proyecto es Obligatorio";
+        }
+        if(strlen($this->proyecto) > 60) {
+            self::$alertas["error"][] = "Nombre de Proyecto Demasiado Largo (60 Caracteres Máximo)";
         }
         return self::$alertas;
     }
