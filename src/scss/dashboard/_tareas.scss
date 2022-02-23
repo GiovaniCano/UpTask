@@ -10,6 +10,11 @@
     }
 }
 
+.eliminar-tarea {
+    @include m.boton(v.$rojo, v.$blanco);
+    margin: 0 auto;
+}
+
 .listado-tareas {
     list-style: none;
     padding: 0;

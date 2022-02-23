@@ -53,6 +53,21 @@ class DashboardController {
         ]);
     }
 
+    public static function eliminar_proyectos() {
+        session_start();
+        isAuth();
+        if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $proyectoId = $_POST["proyectoId"] ?? "";
+            if(!$proyectoId) exit(header("location: /dashboard"));
+
+            $proyecto = Proyecto::where("url", $proyectoId);
+            if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) exit(header("location: /dashboard"));
+
+            $proyecto->eliminar();
+            exit(header("location: /dashboard"));
+        }
+    }
+
     public static function proyecto(Router $router) {
         session_start();
         isAuth();
@@ -63,8 +78,25 @@ class DashboardController {
         $proyecto = Proyecto::where("url", $token);
         if(!$proyecto || $proyecto->propietarioId !== $_SESSION["id"]) exit(header("location: /dashboard"));
 
+        $alertas = [];
+        if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $_POST = cleanAssocArray($_POST, ["proyecto"]);
+            $tituloAnterior = $proyecto->proyecto;
+            $proyecto->sincronizar($_POST);
+
+            $alertas = $proyecto->validarProyecto();
+            if(!$alertas) {
+                $proyecto->actualizar();
+                // exit(header("Location: /proyecto?id=" . $token));
+            } else {
+                $proyecto->proyecto = $tituloAnterior;
+            }
+        }
+
         $router->render("dashboard/proyecto", [
-            "titulo" => $proyecto->proyecto
+            "titulo" => $proyecto->proyecto,
+            "proyectoId" => $token,
+            "alertas" => $alertas
         ]);
     }
 

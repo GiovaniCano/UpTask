@@ -1,6 +1,8 @@
 <?php include_once __DIR__ ."/header-dashboard.php" ?>
 
     <div class="contenedor-sm">
+        <?php include_once __DIR__ . "/../templates/alertas.php" ?>
+
         <div class="contenedor-nueva-tarea">
             <button type="button" class="agregar-tarea" id="agregar-tarea">&#43; Nueva Tarea</button>
         </div>
@@ -24,6 +26,11 @@
         </div>
 
         <ul id="listado-tareas" class="listado-tareas"></ul>
+        
+        <form action="/eliminar-proyectos" method="POST" id="eliminar-proyecto">
+            <input type="hidden" value="<?php echo $proyectoId ?>" name="proyectoId">
+            <input type="submit" class="eliminar-tarea" value="Eliminar Proyecto">
+        </form>
     </div>
     
 <?php include_once __DIR__ ."/footer-dashboard.php" ?>
