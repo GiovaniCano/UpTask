@@ -88,7 +88,7 @@ class LoginController {
                     $email->enviarConfirmacion();
 
                     if($resultado) {
-                        exit(header("location: /mensaje"));
+                        exit(header("location: /mensaje?e={$usuario->email}"));
                     }
                 }
             }
@@ -179,9 +179,28 @@ class LoginController {
     }
         
     public static function mensaje(Router $router) {
+        $email = filter_var($_GET["e"] ?? null, FILTER_VALIDATE_EMAIL);
+        if(!$email) $email = "";
+
         $router->render("auth/mensaje", [
-            "titulo" => "Cuenta Creada Exitosamente"
+            "titulo" => "Cuenta Creada Exitosamente",
+            "email" => $email
         ]);
+    }
+    public static function reenviarConfirmacion() {
+        $email = $_GET["e"] ?? null;
+        if(!$email) exit(header("location: /"));
+
+        $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+        if(!$email) $email = "";
+
+        $usuario = Usuario::where("email", $email);
+        if($usuario && $usuario->token) {
+            $phpMailer = new Email($usuario->email, $usuario->nombre, $usuario->token);
+            $phpMailer->enviarConfirmacion();
+        }
+
+        exit(header("location: /mensaje?e={$email}"));
     }
         
     public static function confirmar(Router $router) {

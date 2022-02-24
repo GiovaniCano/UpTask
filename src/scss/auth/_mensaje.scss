@@ -7,4 +7,11 @@
     .uptask {
         @include m.textoDegradado(v.$naranja)
     }
+
+    .acciones {
+        justify-content: center;
+        a {
+            color: v.$cyan;
+        }
+    }
 }

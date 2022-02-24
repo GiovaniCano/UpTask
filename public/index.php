@@ -30,6 +30,7 @@ $router->post("/restablecer", [LoginController::class, "restablecer"]);
 
 /* confirmacion de cuenta */
 $router->get("/mensaje", [LoginController::class, "mensaje"]);
+$router->get("/reenviar-confirmacion", [LoginController::class, "reenviarConfirmacion"]);
 $router->get("/confirmar", [LoginController::class, "confirmar"]);
 
 // proyectos
